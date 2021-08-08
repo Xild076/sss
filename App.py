@@ -2,7 +2,7 @@ from flask import Flask, session, request, redirect, url_for
 from flask.templating import render_template
 from flask_wtf import FlaskForm
 from Forms import Button_Change_Mode, Radio_EDIT, Radio_ON, SignUp, Radio_SEC, Button_Edit, What_Edit
-import Utility, threading
+import Utility, threading, time
 
 class ServerSide(Utility.Comm):
     def __init__(self, signature):
