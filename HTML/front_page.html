@@ -1,0 +1,15 @@
+{% extends "/base.html" %}
+
+{% block content %}
+
+<h2> Front Page </h2>
+<h3> Select what you want to do </h3>
+<form action="/" method="POST">
+    <p>
+        {{ form.select.label(class="form-control-label")  }}
+        {{  form.select(class="form-control")  }}
+    </p>
+    <p>{{form.submit()}}</p>
+</form>
+
+{% endblock %}
