@@ -6,21 +6,13 @@ import Utility, threading, time
 
 class ServerSide(Utility.Comm):
     def __init__(self, signature):
-        super(ServerSide, self).__init__(signature=signature, debug=False)
+        super(ServerSide, self).__init__(signature=signature, debug=True, msg_prefix="SERVER")
         self._def_action(self.action)
-        self._def_update(self.update)
     
     def action(self, data, outgoing):
-        if self.debug_:
-            print(" *(SS) Server side working [action]")
-    
-    def update(self, data, outgoing):
-        if self.debug_:
-            print(" *(SS) Server side working [update]")
-
+        super(ServerSide, self)._take_action(self, data, outgoing)
 
 server = ServerSide('SERVER')
-server._set_peer('127.0.0.1', 55555)
 
 app = Flask(__name__, template_folder='HTML')
 app.config['SECRET_KEY'] = '12700101202117254011200'
@@ -44,11 +36,12 @@ def mode():
 def edit_man():
     print("Edit man")
     server._append_out(Utility.WebInfo(2, [], [], [True, True, True, True]))
-    server._send_back()
     return "Edit man"
 
 @app.route('/edit_sch')
 def edit_sch():
+    print("Edit man")
+    server._append_out(Utility.WebInfo(2, [], [], [False, False, False, True]))
     return "Edit sch"
 
 @app.route('/edit_auto')
