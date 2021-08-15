@@ -10,6 +10,13 @@ class ClientSide(Utility.Comm):
         self.gpios = Utility.GPIODriver([17,18,22,23])
         self.get_weather = Utility.WeatherService()
         self.weather = self.get_weather.get_weather_forecast()
+        self.list_ons = [False, False, False, False]
+        print(self.list_ons)
+        for gid in range(len(self.gpios.gpio_pins)):
+            if self.list_ons[gid]:
+                self.gpios.on(gid)
+            else:
+                self.gpios.off(gid)
 
     def action(self, data, outgoing):
         if self.debug_ == None:
@@ -21,14 +28,9 @@ class ClientSide(Utility.Comm):
             return
 
         if data.get_mode() == 1:
-            # LEI: better to use "ii" or "gid" to indicate gpio index. 
             for i in range(len(data.get_list_on_sch())):
-                # LEI: Why not simply:
-                # self.list_ons[i] = (data.get_list_on_sch()[i] <= datetime.datetime.now() < data.get_list_off_sch()[i]) ?
-                if data.get_list_on_sch()[i] <= datetime.datetime.now() < data.get_list_off_sch()[i]:
-                    self.list_ons[i] = True
-                else:
-                    self.list_ons[i] = False      
+                self.list_ons[i] = (data.get_list_on_sch()[i] <= datetime.datetime.now() < data.get_list_off_sch()[i])
+     
         elif data.get_mode() == 2:
             self.list_ons = data.get_list_ons()
         else:
@@ -39,11 +41,8 @@ class ClientSide(Utility.Comm):
         if datetime.datetime.now() == Utility.Utility.time_conversion(4, 30):
             self.weather = self.get_weather.get_weather_forecast()
 
-        # LEI: More simple way:
-        # for gid in range(len(self.gpios.gpio_pins)):
-        # self.gpios.on(gid) if self.list_ons[gid] else self.gpios.off[gid]
-        for i in range(len(self.gpios.gpio_pins)):
-            if self.list_ons[i]:
-                self.gpios.on(i)
+        for gid in range(len(self.gpios.gpio_pins)):
+            if self.list_ons[gid]:
+                self.gpios.on(gid)
             else:
-                self.gpios.off(i)
+                self.gpios.off(gid)

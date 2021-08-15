@@ -21,7 +21,7 @@ class Radio_SEC(FlaskForm):
 
 
 class Radio_EDIT(FlaskForm):
-    select = RadioField(label='Edit? mode', choices=[("Man", "Edit Manual"), ("Sch", "Edit Schedule"), ("Auto", "Edit Automatic")])
+    select = RadioField(label='Edit mode', choices=[("Man", "Edit Manual"), ("Sch", "Edit Schedule"), ("Auto", "Edit Automatic")])
     submit = SubmitField('EDIT')
 
 
@@ -36,4 +36,8 @@ class Button_Change_Mode(FlaskForm):
 
 class What_Edit(FlaskForm):
     select = SelectField(label='Select', choices=[("man", "Manual"), ("sch", "Schedule"), ("auto", "Automatic")])
+    submit = SubmitField('Submit')
+
+class What_Zone(FlaskForm):
+    select = SelectField(label='Select', choices=[("1", "Zone 1"), ("2", "Zone 2"), ("3", "Zone 3"), ("4", "Zone 4")])
     submit = SubmitField('Submit')
