@@ -1,5 +1,3 @@
-from flask import Flask, session, request, redirect, url_for
-from flask.templating import render_template
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField, PasswordField, SelectField, RadioField
 

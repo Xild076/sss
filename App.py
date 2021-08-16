@@ -1,21 +1,10 @@
-from datetime import date
-from flask import Flask, session, request, redirect, url_for
-from flask.templating import render_template
-from flask_wtf import FlaskForm
-from Forms import Button_Change_Mode, Radio_EDIT, Radio_ON, SignUp, Radio_SEC, Button_Edit, What_Edit, What_Zone
-import Utility, threading, time
+from flask import Flask, render_template, request, redirect, url_for
+import Server, Utility
+from Forms import *
 
-class ServerSide(Utility.Comm):
-    def __init__(self, signature):
-        super(ServerSide, self).__init__(signature=signature, debug=True, msg_prefix="SERVER")
-        self._def_action(self.action)
-    
-    def action(self, data, outgoing):
-        super(ServerSide, self)._take_action(self, data, outgoing)
+server = Server.ServerSide()
 
-server = ServerSide('SERVER')
-
-app = Flask(__name__, template_folder='HTML')
+app = Flask(__name__, template_folder='Html')
 app.config['SECRET_KEY'] = '12700101202117254011200'
 
 saved_info = Utility.WebInfo(2, [], [], [False, False, False, True])
@@ -43,7 +32,6 @@ def edit_man():
 @app.route('/edit_sch')
 def edit_sch():
     print("Edit man")
-    server._append_out(Utility.WebInfo(2, [], [], [False, False, False, True]))
     return "Edit sch"
 
 @app.route('/edit_auto')
@@ -92,12 +80,11 @@ def edit_action():
     return render_template('edit_page.html', form=form)
 
 
-
 def _get_inc_port():
-    return server._get_inc_host()
+    return server.incoming_port_
 
 def _get_out_port():
-    return server._get_out_host()
+    return server.outgoing_port_
 
 def _set_out_peer(port):
     server._set_peer('127.0.0.1', port)

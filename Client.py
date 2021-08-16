@@ -1,31 +1,16 @@
 import Utility, datetime
-from Utility import debug_print
 
-class ClientSide(Utility.Comm):
-    def __init__(self, signature):
-        super(ClientSide, self).__init__(signature=signature, debug=True, msg_prefix="CLIENT")
-        self.list_ons = list()
-        self.action_ = self.action
-        self.update_data_ = self.update # LEI: update_ or update_data_ ??
-        self.gpios = Utility.GPIODriver([17,18,22,23])
-        self.get_weather = Utility.WeatherService()
-        self.weather = self.get_weather.get_weather_forecast()
+class ClientSide(Utility.CommBase):
+    def __init__(self, signature="CLIENT", debug=False):
+        super(ClientSide, self).__init__(signature, debug)
+        self._def_action(self.action)
         self.list_ons = [False, False, False, False]
-        print(self.list_ons)
-        for gid in range(len(self.gpios.gpio_pins)):
-            if self.list_ons[gid]:
-                self.gpios.on(gid)
-            else:
-                self.gpios.off(gid)
-
-    def action(self, data, outgoing):
-        if self.debug_ == None:
-            print(" * (SS) action started")
     
-    def update(self, data, outgoing):
-        self.list_ons = [False, False, False, False]
+    def action(self, data, outgoing):
         if data is None:
             return
+
+        self.logging_.log(self.signature_, f"Mode: {data.get_mode()}", Utility.LogType.Type.DEBUG)
 
         if data.get_mode() == 1:
             for i in range(len(data.get_list_on_sch())):
