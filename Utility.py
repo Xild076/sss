@@ -1,5 +1,5 @@
 import enum, threading, datetime, socket, sys, pickle, gpiozero, requests
-from flask import Flask
+from flask import Flask, render_template
 
 class Logger(object):
     def __init__(self, file="/home/pi/projects/riss/logs.txt", print=False):
@@ -244,10 +244,3 @@ class Utility():
         now = datetime.datetime.now()
         now.replace(hour=hour, minute=min, second=0, microsecond=0)
         return now
-
-
-class AppUtil():
-    def __init__(self, debug=False, host='0.0.0.0'):
-        self.debug = debug
-        self.host = host
-        self.app = Flask(__name__)
